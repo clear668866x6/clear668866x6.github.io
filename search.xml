@@ -1943,7 +1943,197 @@ a_j + a_1 < j \cdot c
 <hr>
 <p>这个后期改为好题归类，因为计划变更为：每天得VP一场古老cf。相信自己能变得越来越强吧</p>
 <hr>
-]]></content>
+<h1 id="2-17-3-4"><a href="#2-17-3-4" class="headerlink" title="2.17-3.4"></a>2.17-3.4</h1><p>已经好久都没有更新了，这次准备大更新。</p>
+<h2 id="580B-Kefa-and-Company-1500-尺取法"><a href="#580B-Kefa-and-Company-1500-尺取法" class="headerlink" title="580B-Kefa and Company *1500 尺取法"></a>580B-Kefa and Company <strong>*1500</strong> 尺取法</h2><ul>
+<li><p>题意：给定 $n$ 个人的金额和友谊因素，当选的人的钱 $&lt;d$ 的情况下，那么可以选他，问最后选的人的最大总友谊因素和。</p>
+</li>
+<li><p>思路：因为题目判定是否为朋友的条件是钱 $&lt;d$，那么我们可以先对钱进行排序，然后我们采用 <strong>尺取法</strong>，在尺子内的朋友都是满足条件的，我们求一下它们的友谊因素和，取个最大值。</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> n,m;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">E</span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b;</span><br><span class="line">    <span class="type">bool</span> <span class="keyword">operator</span>&lt;(<span class="type">const</span> E &amp;x) <span class="type">const</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> a &lt; x.a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;w[N];</span><br><span class="line"><span class="type">int</span> s[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">        cin&gt;&gt;w[i].a&gt;&gt;w[i].b;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">sort</span>(w<span class="number">+1</span>,w+n<span class="number">+1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">        s[i]=s[i<span class="number">-1</span>]+w[i].b;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> ans=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> r=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(l,<span class="number">1</span>,n)&#123;</span><br><span class="line">        <span class="keyword">while</span>(r&lt;=n&amp;&amp;w[r].a-w[l].a&lt;m)&#123;</span><br><span class="line">            ans=<span class="built_in">max</span>(ans,s[r]-s[l<span class="number">-1</span>]);</span><br><span class="line">            r++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="616D-Longest-k-Good-Segment-1600-尺取法"><a href="#616D-Longest-k-Good-Segment-1600-尺取法" class="headerlink" title="616D-Longest k-Good Segment *1600 尺取法"></a>616D-Longest k-Good Segment <strong>*1600</strong> 尺取法</h2><ul>
+<li><p>题意：给定一个包含 $n$ 个整数的数组 $a$。我们将数组中一个或多个连续元素的序列称为 $a$ 的 段。同时，如果一个段包含的不同值不超过 $k$ 个，则称该段为 $k-好$。找到任意最长的 $k-好$段。</p>
+</li>
+<li><p>思路：对于这种找到某一段的xxx性质，此时都得考虑尺取法。它说什么不同元素的，此时这个可以用桶来做。此后，就是尺子内的元素都满足有 $k$ 个不同的元素。</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> n,k;</span><br><span class="line"><span class="type">int</span> w[N];</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">E</span>&#123;</span><br><span class="line">    <span class="type">int</span> l,r,len;</span><br><span class="line">    <span class="type">bool</span> <span class="keyword">operator</span>&lt;(<span class="type">const</span> E&amp; t)<span class="type">const</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> len&gt;t.len;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;k;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)cin&gt;&gt;w[i];</span><br><span class="line"></span><br><span class="line">    vector&lt;E&gt;ans;</span><br><span class="line"></span><br><span class="line">    map&lt;<span class="type">int</span>,<span class="type">int</span>&gt;S;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> r=<span class="number">0</span>;</span><br><span class="line">    <span class="built_in">FOR</span>(l,<span class="number">1</span>,n)&#123;</span><br><span class="line">        <span class="keyword">while</span>(r&lt;n&amp;&amp;S.sz&lt;=k)&#123;</span><br><span class="line">            S[w[++r]]++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(S.sz&lt;=k<span class="number">+1</span>&amp;&amp;r&lt;n)&#123;</span><br><span class="line">            ans.<span class="built_in">pb</span>(&#123;l,r<span class="number">-1</span>,r-l&#125;);</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(r==n&amp;&amp;S.sz&lt;=k)&#123;</span><br><span class="line">            ans.<span class="built_in">pb</span>(&#123;l,r,r-l<span class="number">+1</span>&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(--S[w[l]]==<span class="number">0</span>)&#123;</span><br><span class="line">            S.<span class="built_in">erase</span>(w[l]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">sort</span>(<span class="built_in">ALL</span>(ans));</span><br><span class="line">    cout&lt;&lt;ans[<span class="number">0</span>].l&lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt;ans[<span class="number">0</span>].r&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="702C-Cellular-Network-1500-二分-尺取法"><a href="#702C-Cellular-Network-1500-二分-尺取法" class="headerlink" title="702C-Cellular Network *1500 二分+尺取法"></a>702C-Cellular Network <strong>*1500</strong> 二分+尺取法</h2><ul>
+<li><p>题意：给定一条直线上的 $n$ 个村庄和 $m$ 个基站，现在要找出最小的 $r$，使得每个城市都被移动通信网络覆盖。</p>
+</li>
+<li><p>思路：我们发现这道题有二段性，就是当 $r$ 比较小肯定不满足，$r$ 比较大肯定满足，此时就会有一个分界线，因此满足二分答案条件。那么现在已知 $r$，要看是否能覆盖所有村庄，此时我们可以用尺取法把能覆盖的村庄都标记一下，然后最后遍历所有村庄看哪些村庄没有被标记。</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> n,m;</span><br><span class="line"><span class="type">int</span> a[N],b[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">check</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="function">VI <span class="title">vis</span><span class="params">(n<span class="number">+1</span>,<span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="type">int</span> j=<span class="number">1</span>;</span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">        <span class="keyword">while</span>(j&lt;=m&amp;&amp;<span class="built_in">abs</span>(a[i]-b[j])&gt;x)j++;</span><br><span class="line">        <span class="keyword">if</span>(j==m<span class="number">+1</span>)<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">abs</span>(a[i]-b[j])&lt;=x)vis[i]=<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">        <span class="keyword">if</span>(vis[i]==<span class="number">0</span>)<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)cin&gt;&gt;a[i];</span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,m)cin&gt;&gt;b[i];</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> l=<span class="number">-1</span>,r=<span class="number">1e12</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(l<span class="number">+1</span>!=r)&#123;</span><br><span class="line">        <span class="type">int</span> mid=l+r&gt;&gt;<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">check</span>(mid))r=mid;</span><br><span class="line">        <span class="keyword">else</span> l=mid;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;r;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>尺取法用处：解决连续段满足特定性质的个数、起始下标等。</p>
+</blockquote>
+<h2 id="1995C-Squaring-1800-贪心"><a href="#1995C-Squaring-1800-贪心" class="headerlink" title="1995C-Squaring *1800 贪心"></a>1995C-Squaring <strong>*1800</strong> 贪心</h2><ul>
+<li>题意：给你一个大小为 $n$ 的数组，你每次可以把数组中的数 $a_i$ 改成 $a_i^2$，问最小的操作次数使得数列非递减。</li>
+<li>思路：我们可以先考虑最简单的情况，那就是当 $a<em>i=1$ 的情况，因为 $1$ 不管怎么平方都是等于 $1$，如果 $1$ 在中间那就很不好说了，此时就无解；现在考虑一般情况，如果 $a</em>{i-1}&gt;a<em>i$，那么此时我们就可以把 $a_i$ 一直平方直到它彻底比 $a</em>{i-1}$ 大，此时为了避免每一次都计算，我们可以考虑用dp，也就是设：第 $i$ 个数操作次数为 $f[i]$。然后只需要比较相邻的数就行，因为如果本来这个数就是单调递增的话，此时就不会被算进去了，此时就可以节省计算量。但这里要注意的是：比如 <code>16 2 4 2</code>，这种，因为 <code>16 2</code> 是递减的，因此我们要让不递减的话，就让 <code>2</code> 操作 $3$ 次即可，然后就开始处理 <code>2 4</code>，我们发现这两个数本来就是单调递增的，此时我们直接延用上一次操作，但直接沿用上一次操作可能会出现的问题就是会平方过头了，所以我们要开根号来避免这种情况。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> n;</span><br><span class="line"><span class="type">int</span> w[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line"></span><br><span class="line">    <span class="function">VI <span class="title">f</span><span class="params">(n<span class="number">+1</span>,<span class="number">0</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)cin&gt;&gt;w[i];</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> ans=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">2</span>,n)&#123;</span><br><span class="line">        <span class="type">int</span> now=w[i],cnt=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(now&lt;w[i<span class="number">-1</span>])&#123;</span><br><span class="line">            <span class="keyword">if</span>(now==<span class="number">1</span>)&#123;</span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;-1&quot;</span>&lt;&lt;endl;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span>(now&lt;w[i<span class="number">-1</span>])&#123;</span><br><span class="line">                now=now*now;</span><br><span class="line">                cnt++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">while</span>((w[i<span class="number">-1</span>]==<span class="number">1</span>)&amp;&amp;<span class="built_in">sqrt</span>(now)&gt;w[i<span class="number">-1</span>]||(w[i<span class="number">-1</span>]!=<span class="number">1</span>&amp;&amp;<span class="built_in">sqrt</span>(now)&gt;=w[i<span class="number">-1</span>]))&#123;</span><br><span class="line">                now=<span class="built_in">sqrt</span>(now);</span><br><span class="line">                cnt--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        f[i]=<span class="built_in">max</span>(&#123;f[i],(<span class="type">int</span>)<span class="number">0</span>,f[i<span class="number">-1</span>]+cnt&#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)ans+=f[i];</span><br><span class="line"></span><br><span class="line">    cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>为了避免重复计算，我们可以考虑沿用上一次操作（类似相对值的操作）</p>
+</blockquote>
+<h2 id="2006C-Action-Figures-1500-思维"><a href="#2006C-Action-Figures-1500-思维" class="headerlink" title="2006C-Action Figures *1500 思维"></a>2006C-Action Figures <strong>*1500</strong> 思维</h2><ul>
+<li>题意：给定一个人每天的出行情况，$1$ 表示去商场购物，$0$ 表示没有。如果他在用一天买了两个以上的玩具，那么他可以免费获得他购买的最贵的玩偶（玩具的价钱和天数 $i$ 有关，且他只能买前 $i$ 天的玩具）。问它买所有玩具需要的最少花费。</li>
+<li>思路：我们可以发现，我们如果在有 $1$ 的那天出门，此时我们买的都是之前 $0$ 的那几天的玩具。因此我们可以倒叙遍历，把 $1$ 对应的下标都存下来，然后到 $0$ 的时候拿出来，这样也就相当于有 $1$ 的时候我们就买它前面 $0$ 的玩具，注意是尽可能的买，当出现 <code>10001</code> 这样的情况，我们就是得把前面的 <code>0</code> 全部买了。如果我们的 $1$ 有剩的话，我们就搭配最小的和最大的买即可（也就是比如第 $1$ 个和第 $n$ 个买）。这里可以用栈或者堆来维护。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">string s;</span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;s;</span><br><span class="line"></span><br><span class="line">    s=<span class="string">&#x27; &#x27;</span>+s;</span><br><span class="line"></span><br><span class="line">    deque&lt;<span class="type">int</span>&gt;q;</span><br><span class="line">    <span class="type">int</span> ans=<span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">FORD</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">        <span class="keyword">if</span>(s[i]==<span class="string">&#x27;1&#x27;</span>)&#123;</span><br><span class="line">            q.<span class="built_in">push_back</span>(i);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(q.sz)q.<span class="built_in">pop_front</span>();</span><br><span class="line">            ans+=i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(q.sz)&#123;</span><br><span class="line">        ans+=q.<span class="built_in">back</span>();</span><br><span class="line">        q.<span class="built_in">pop_back</span>();</span><br><span class="line">        <span class="keyword">if</span>(q.sz==<span class="number">0</span>)<span class="keyword">break</span>;</span><br><span class="line">        q.<span class="built_in">pop_front</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<hr>
+<p>一下是被1200的题虐的现场，也不知道怎么回事，我居然1200的题会卡半天。</p>
+<h2 id="1979C-Earning-on-Bets-1200-数学、构造"><a href="#1979C-Earning-on-Bets-1200-数学、构造" class="headerlink" title="1979C-Earning on Bets *1200 数学、构造"></a>1979C-Earning on Bets <strong>*1200</strong> 数学、构造</h2><ul>
+<li><p>题意：有一种游戏，在这种游戏中，有 $n$ 种可能的结果，对于每一种结果，如果获胜的话，将会得到你在该结果上押注的硬币数量乘以 $k_i$ 的硬币数。你的任务是合理分配好硬币，以便在任何获胜的结果发生时都能获利，获胜的条件是：你在所有结果上押注的硬币总数必须小于每个可能获胜结果所获得的硬币数。求每次押注的硬币。</p>
+</li>
+<li><p>思路：题目也就是要构造一个数组 $b<em>i$，使得 $a_ib_i&gt;\sum</em>{j=1}^{n}b_j$。我们此时发现，只要 $a_ib_i$ 都相等时最优。那怎样让它们相等，此时就是算 $a_i$ 的 $lcm$（最小公倍数），但数不能超过 $20$，因为超过 $20$ 的 lcm 就飞天了。</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> n,w[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">lcm</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x*y/__gcd(x,y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)cin&gt;&gt;w[i];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(n&gt;=<span class="number">20</span>)&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;-1&quot;</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">1</span>)&#123;</span><br><span class="line">        cout&lt;&lt;<span class="number">1</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> t=<span class="built_in">lcm</span>(w[<span class="number">1</span>],w[<span class="number">2</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">3</span>,n)&#123;</span><br><span class="line">        t=<span class="built_in">lcm</span>(t,w[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> ans=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">        ans+=t/w[i];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(ans&gt;=t)&#123;</span><br><span class="line">        cout&lt;&lt;<span class="number">-1</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)cout&lt;&lt;t/w[i]&lt;&lt;<span class="string">&quot; \n&quot;</span>[i==n];</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我靠，我居然被1200的题干成这样，服了。</p>
+</blockquote>
+<h2 id="1954C-Long-Multiplication-1200-数学"><a href="#1954C-Long-Multiplication-1200-数学" class="headerlink" title="1954C-Long Multiplication *1200 数学"></a>1954C-Long Multiplication <strong>*1200</strong> 数学</h2><ul>
+<li><p>题意：给定长度相同的数字 $x,y$，数字由 $0$ 到 $9$ 组成，你可以进行以下操作任意次：交换 $x$ 中的第 $i$ 位数字和 $y$ 中的第 $i$ 位数字，最后使得它们的乘积最大。</p>
+</li>
+<li><p>思路：我们可以知道，当两个数的差值越小，它们的乘积越大。因为长度最长也就 $100$，那么我们可以贪心的枚举每一位，然后交换之后看看差值会不会变小。具体来说的话就是：如果 $s&gt;t$ 并且 $s_i&gt;t_i$，此时交换更优。 </p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cin&gt;&gt;s&gt;&gt;t;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> n=s.sz;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">0</span>,n<span class="number">-1</span>)&#123;</span><br><span class="line">       <span class="keyword">if</span>(s&gt;t&amp;&amp;s[i]&gt;t[i])<span class="built_in">swap</span>(s[i],t[i]); </span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(s&lt;t&amp;&amp;s[i]&lt;t[i])<span class="built_in">swap</span>(s[i],t[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(s&lt;t)<span class="built_in">swap</span>(s,t);</span><br><span class="line">    cout&lt;&lt;s&lt;&lt;endl&lt;&lt;t&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="1990C-Mad-MAD-Sum-1500-找规律"><a href="#1990C-Mad-MAD-Sum-1500-找规律" class="headerlink" title="1990C-Mad MAD Sum *1500 找规律"></a>1990C-Mad MAD Sum <strong>*1500</strong> 找规律</h2><ul>
+<li><p>题意：给出一个初始数组。重复同时将数组的每一位变为从数组到此为止出现至少两次的数中最大者，直到数组元素全为 $0$。求该过程中每一步得到的数组（包括初始数组）元素和。</p>
+</li>
+<li><p>思路：我们可以把每一步列出来，我们会发现它有规律：</p>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>1</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>1</td>
+<td>4</td>
+<td>1</td>
+<td>9</td>
+<td>1</td>
+<td>9</td>
+<td>8</td>
+<td>1</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>然后我们计算的时候注意，这样算更方便：对角线 <code>\</code> 类似这种线来算。还有就是得注意：得操作一次之后才会有这种性质。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> n,w[N],a[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> ans=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    map&lt;<span class="type">int</span>,<span class="type">int</span>&gt;S;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)cin&gt;&gt;w[i],ans+=w[i];</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)a[i]=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    set&lt;<span class="type">int</span>&gt;P;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> mx=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">        <span class="keyword">if</span>(P.<span class="built_in">count</span>(w[i]))&#123;</span><br><span class="line">            mx=<span class="built_in">max</span>(mx,w[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        a[i]=mx;</span><br><span class="line">        P.<span class="built_in">insert</span>(w[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    P.<span class="built_in">clear</span>();</span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)ans+=a[i];</span><br><span class="line">    <span class="built_in">fill</span>(w<span class="number">+1</span>,w<span class="number">+1</span>+n,<span class="number">0</span>);</span><br><span class="line">    mx=<span class="number">0</span>;</span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">        <span class="keyword">if</span>(P.<span class="built_in">count</span>(a[i]))&#123;</span><br><span class="line">            mx=<span class="built_in">max</span>(mx,a[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        w[i]=mx;</span><br><span class="line">        P.<span class="built_in">insert</span>(a[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)ans+=w[i];</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)ans+=(n-i)*w[i];</span><br><span class="line"></span><br><span class="line">    cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="1806C-Sequence-Master-1600-打表"><a href="#1806C-Sequence-Master-1600-打表" class="headerlink" title="1806C-Sequence Master *1600 打表"></a>1806C-Sequence Master <strong>*1600</strong> 打表</h2><ul>
+<li><p>题意：给定长为 $2n$ 的数组 $p$，你需要构造一个长度为 $2n$ 的数组 $q$，满足 $ S \subseteq U $ 且 $ |S|=m $，$ \prod\limits<em>{i \in S} q_i = \sum\limits</em>{i \in U \setminus S} q<em>i $。<br>且你构造的 $q$ 数组需要让 $ans = \sum\limits</em>{i=1}^k|a_i-b_i| $ 最小，输出这个 $ans$。</p>
+</li>
+<li><p>思路： 不难构造一个全零数组 $q$，即可满足题目要求。<br>接下来观察样例，由第一组样例发现 $n=1$ 时容易构造 $q={q_1,q_1}$，即可使答案最小。<br>由第二组样例发现 $n=2$ 时可以构造 $q={2,2,2,2}$，可能可以使答案最小。<br>第三组样例发现很难找出什么性质，甚至无法手玩出样例，此时尝试写一个爆搜程序暴力枚举 $q$ 数组，观察样例输出 $5$，$p={-2,-2,2,2}$，所以我们可以尝试将 $p$ 数组的每个元素都加上 $-5 \sim 5$ 来尝试得到 $q$ 数组，当枚举出一个 $q$ 数组时就更新一下答案。<br>发现最后得到的 $q={-1,-1,-1,2}$，尝试将 $n$ 推广到更大，发现当 $n$ 为偶数时可以构造出 $q={-1,-1,……,-1,n}$，而 $n$ 为奇数时则无法构造。<br>最后观察第四组样例，进一步确认了 $q={-1,-1,……,-1,n}$ 的正确性。<br>分讨一下 $n \le 2$ 的情况和 $n$ 的奇偶即可。<a href="https://www.luogu.com.cn/article/gvdude8h">思路引用</a></p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> n,w[N*<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n*<span class="number">2</span>)cin&gt;&gt;w[i];</span><br><span class="line"></span><br><span class="line">    <span class="built_in">sort</span>(w<span class="number">+1</span>,w<span class="number">+1</span><span class="number">+2</span>*n);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">1</span>)&#123;</span><br><span class="line">        cout&lt;&lt;w[<span class="number">2</span>]-w[<span class="number">1</span>]&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> ans=<span class="number">1e18</span>;</span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">2</span>)&#123;</span><br><span class="line">        <span class="type">int</span> sum=<span class="number">0</span>;</span><br><span class="line">        <span class="built_in">FOR</span>(i,<span class="number">1</span>,<span class="number">2</span>*n)&#123;</span><br><span class="line">            sum+=<span class="built_in">abs</span>(w[i]<span class="number">-2</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ans=<span class="built_in">min</span>(ans,sum);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(n%<span class="number">2</span>==<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="type">int</span> sum=<span class="number">0</span>;</span><br><span class="line">        <span class="built_in">FOR</span>(i,<span class="number">1</span>,<span class="number">2</span>*n<span class="number">-1</span>)&#123;</span><br><span class="line">            sum+=<span class="built_in">abs</span>(<span class="number">-1</span>-w[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        sum+=<span class="built_in">abs</span>(n-w[n*<span class="number">2</span>]);</span><br><span class="line">        ans=<span class="built_in">min</span>(ans,sum);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> sum=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,<span class="number">2</span>*n)&#123;</span><br><span class="line">        sum+=<span class="built_in">abs</span>(w[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ans=<span class="built_in">min</span>(ans,sum);</span><br><span class="line"></span><br><span class="line">    cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="1903C-Theofanis’-Nightmare-1400-前缀和"><a href="#1903C-Theofanis’-Nightmare-1400-前缀和" class="headerlink" title="1903C-Theofanis’ Nightmare *1400 前缀和"></a>1903C-Theofanis’ Nightmare <strong>*1400</strong> 前缀和</h2><ul>
+<li>题意：给你一个数组，现在要求你构造一种分发，把数组分成 $k$ 份，使得 $\sum_{i=1}^{k}i\times sum_i$ 最大，求出这个的最大值。</li>
+<li>思路：我们有个很明显的思路就是，按照后缀只要一旦大于 $0$ 的，我们就分割，这样肯定是最优的，因为不是大于 $0$ 的分，那么 $sum_i&lt;0$，此时就会使得答案变小。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)cin&gt;&gt;w[i];</span><br><span class="line"></span><br><span class="line">    <span class="function">VI <span class="title">suf</span><span class="params">(n<span class="number">+2</span>,<span class="number">0</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FORD</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">        suf[i]=suf[i<span class="number">+1</span>]+w[i];</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//</span></span><br><span class="line">    <span class="type">int</span> id=<span class="number">0</span>,ans=<span class="number">0</span>;</span><br><span class="line">    VI p;</span><br><span class="line">    <span class="built_in">FORD</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">        <span class="keyword">if</span>(suf[i]&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            p.<span class="built_in">pb</span>(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!p.sz||p.<span class="built_in">back</span>()!=<span class="number">1</span>)&#123;</span><br><span class="line">        p.<span class="built_in">pb</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> pp=p.sz;</span><br><span class="line">    <span class="type">int</span> lst=n<span class="number">+1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> x:p)&#123;</span><br><span class="line">        <span class="comment">// cout&lt;&lt;x&lt;&lt;endl;</span></span><br><span class="line">        ans+=pp*(suf[x]-suf[lst]);</span><br><span class="line">        lst=x;</span><br><span class="line">        pp--;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="1909C-Heavy-Intervals-1400-贪心"><a href="#1909C-Heavy-Intervals-1400-贪心" class="headerlink" title="1909C-Heavy Intervals *1400 贪心"></a>1909C-Heavy Intervals <strong>*1400</strong> 贪心</h2><ul>
+<li>题意：给定了长度为 $n$ 的三个序列 $l,r,c$，保证 $l<em>i&lt;r_i$，并且 ${l_1,l_2,l_3,…,l_n,r_1,r_2,…,r_n}$。你需要重新排列这三个序列，排完序依然保证 $l_i&lt;r_i$。但是你需要最小化 $∑</em>{i=1}^{n}(r_i−l_i)×c_i$ 的值。</li>
+<li>思路：因为你要最小化这个值，因此我们可以考虑从小到大排序，然后固定 $r_i$ 来找所有满足 $r_i&gt;l_i$ 的 $l_i$，此时如果长度比较长的话，我们就分配小的 $c_i$ 即可。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)cin&gt;&gt;l[i];</span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)cin&gt;&gt;r[i];</span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)cin&gt;&gt;c[i];</span><br><span class="line"></span><br><span class="line">    <span class="built_in">sort</span>(l<span class="number">+1</span>,l<span class="number">+1</span>+n),<span class="built_in">sort</span>(r<span class="number">+1</span>,r<span class="number">+1</span>+n),<span class="built_in">sort</span>(c<span class="number">+1</span>,c<span class="number">+1</span>+n);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> j=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    stack&lt;<span class="type">int</span>&gt;stk;</span><br><span class="line"></span><br><span class="line">    <span class="function">VI <span class="title">ans</span><span class="params">(n<span class="number">+1</span>,<span class="number">0</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">        <span class="keyword">while</span>(r[i]&gt;l[j]&amp;&amp;j&lt;=n)&#123;</span><br><span class="line">            stk.<span class="built_in">push</span>(j);</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">        ans[i]=r[i]-l[stk.<span class="built_in">top</span>()];</span><br><span class="line">        stk.<span class="built_in">pop</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">sort</span>(ans.<span class="built_in">begin</span>()<span class="number">+1</span>,ans.<span class="built_in">end</span>(),<span class="built_in">GI</span>());</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> res=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">        res+=(ans[i]*c[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    cout&lt;&lt;res&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id=""><a href="#" class="headerlink" title=" "></a> </h2>]]></content>
       <tags>
         <tag>算法</tag>
       </tags>
@@ -2088,6 +2278,36 @@ a_j + a_1 < j \cdot c
 ]]></content>
       <tags>
         <tag>Codeforces</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>奇技淫巧</title>
+    <url>/2025/03/01/%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/</url>
+    <content><![CDATA[<h1 id="曼哈顿距离转化为切比雪夫距离"><a href="#曼哈顿距离转化为切比雪夫距离" class="headerlink" title="曼哈顿距离转化为切比雪夫距离"></a>曼哈顿距离转化为切比雪夫距离</h1><ul>
+<li>曼哈顿距离概念：如果平面内有 $(x_1,y_1)$ 以及 $(x_2,y_2)$，那么它们的距离就是 $d=|x_1-x_2|+|y_1-y_2|$。</li>
+<li><p>切比雪夫距离概念：如果平面内有 $(x_1,y_1)$ 以及 $(x_2,y_2)$，那么它们的距离就是 $d=\max(|x_1-x_2|,|y_1-y_2|)$。</p>
+</li>
+<li><p>二者相互转化：曼哈顿转切比雪夫距离就是旋转 $45$°，然后扩大 $\sqrt 2$ 倍。</p>
+</li>
+<li><p>总的来说：</p>
+</li>
+<li><ul>
+<li>曼哈顿距离转切比雪夫距离：$(x,y)\rightarrow (x+y,x-y)$。</li>
+</ul>
+</li>
+<li><ul>
+<li>切比雪夫距离转曼哈顿距离：$(x,y)\rightarrow ((x+y)/2,(x-y)/2)$。</li>
+</ul>
+</li>
+</ul>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><h3 id="1689D-Lena-and-Matrix"><a href="#1689D-Lena-and-Matrix" class="headerlink" title="1689D-Lena and Matrix"></a>1689D-Lena and Matrix</h3><ul>
+<li>题意：给定一张表（有黑色的也有白色的单元格），找出一个单元格，使其到所选单元格最远的黑色单元格的曼哈顿距离最小。</li>
+<li>思路：曼哈顿距离求这种最大最小的问题比较困难，更何况那么多单元格。因此，我们转化成切比雪夫距离，这样求最大最小值就可以非常方便了，也就是此时我们只需要排序即可。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line"></span><br><span class="line">    VI v1,v2;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> ansx=<span class="number">1e18</span>,ansy=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">        <span class="built_in">FOR</span>(j,<span class="number">1</span>,m)&#123;</span><br><span class="line">            cin&gt;&gt;s[i][j];</span><br><span class="line">            <span class="keyword">if</span>(s[i][j]==<span class="string">&#x27;B&#x27;</span>)&#123;<span class="comment">//转换切比雪夫距离</span></span><br><span class="line">                v<span class="number">1.</span><span class="built_in">pb</span>(j-i);</span><br><span class="line">                v<span class="number">2.</span><span class="built_in">pb</span>(i+j);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">sort</span>(<span class="built_in">ALL</span>(v1)),<span class="built_in">sort</span>(<span class="built_in">ALL</span>(v2));</span><br><span class="line"></span><br><span class="line">    function&lt;<span class="type">int</span>(<span class="type">int</span>,<span class="type">int</span>)&gt;calc=[&amp;](<span class="type">int</span> x,<span class="type">int</span> y)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(&#123;x-v1[<span class="number">0</span>],y-v2[<span class="number">0</span>],v1[v<span class="number">1.</span>sz<span class="number">-1</span>]-x,v2[v<span class="number">2.</span>sz<span class="number">-1</span>]-y&#125;);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">FOR</span>(i,<span class="number">1</span>,n)&#123;</span><br><span class="line">        <span class="built_in">FOR</span>(j,<span class="number">1</span>,m)&#123;</span><br><span class="line">            <span class="type">int</span> xx=j-i,yy=i+j;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">calc</span>(xx,yy)&lt;<span class="built_in">calc</span>(ansy-ansx,ansx+ansy))&#123;</span><br><span class="line">                ansx=i,ansy=j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    cout&lt;&lt;ansx&lt;&lt;<span class="string">&#x27; &#x27;</span>&lt;&lt;ansy&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>技巧</tag>
       </tags>
   </entry>
 </search>
